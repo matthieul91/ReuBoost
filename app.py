@@ -114,26 +114,190 @@ def inject_css():
 
         /* 5. BOUTONS MATERIAL DESIGN */
         .stButton > button {
-            font-family: 'Google Sans', sans-serif !important;
+            font-family: 'Google Sans', 'Roboto', sans-serif !important;
             border-radius: 24px !important;
+            padding: 0.5rem 1.8rem !important;
+            font-weight: 500 !important;
+            font-size: 0.9rem !important;
+            letter-spacing: 0.25px !important;
+            border: none !important;
             background-color: #4285F4 !important;
             color: white !important;
-            border: none !important;
+            transition: all 0.2s ease !important;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12) !important;
         }
         
         .stButton > button:hover {
             background-color: #3367D6 !important;
-            box-shadow: 0 4px 8px rgba(66,133,244,0.3) !important;
+            box-shadow: 0 4px 8px rgba(66,133,244,0.35) !important;
+            transform: translateY(-1px) !important;
         }
 
         /* 6. CARTES ET CONTENEURS */
         .material-card {
             background: white !important;
             border-radius: 12px !important;
-            padding: 1.5rem !important;
+            padding: 1.5rem 2rem !important;
+            margin-bottom: 1.2rem;
             border: 1px solid #E8EAED !important;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06) !important;
+            transition: box-shadow 0.2s ease;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .material-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important;
+        }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%) !important;
+            color: white !important;
+            padding: 2rem 2.5rem !important;
+            border-radius: 16px !important;
+            margin-bottom: 2rem !important;
+            box-shadow: 0 4px 20px rgba(66,133,244,0.25) !important;
+        }
+        .app-header h1 {
+            font-family: 'Google Sans', 'Roboto', sans-serif !important;
+            font-size: 2rem !important;
+            font-weight: 700 !important;
+            margin: 0 !important;
+            letter-spacing: -0.5px !important;
+            color: white !important;
+        }
+        .app-header p {
+            font-size: 1rem !important;
+            opacity: 0.9 !important;
+            margin: 0.3rem 0 0 0 !important;
+            font-weight: 300 !important;
+            color: white !important;
+        }
+
+        /* ===== SESSION CODE ===== */
+        .session-code-box {
+            background: linear-gradient(135deg, #E8F0FE 0%, #D2E3FC 100%) !important;
+            border: 2px solid #4285F4 !important;
+            border-radius: 16px !important;
+            padding: 2rem !important;
+            text-align: center !important;
+            margin: 1rem 0 !important;
+        }
+        .session-code {
+            font-family: 'Google Sans', 'Roboto', sans-serif !important;
+            font-size: 3.5rem !important;
+            font-weight: 700 !important;
+            color: #4285F4 !important;
+            letter-spacing: 12px !important;
+            margin: 0 !important;
+        }
+        .session-code-label {
+            font-size: 0.9rem !important;
+            color: #5F6368 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 2px !important;
+            font-weight: 500 !important;
+        }
+
+        /* ===== ROLE SELECTOR ===== */
+        .role-card {
+            background: white !important;
+            border-radius: 16px !important;
+            padding: 2.5rem 2rem !important;
+            text-align: center !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+            border: 2px solid #E8EAED !important;
+            transition: all 0.3s ease !important;
+            cursor: pointer !important;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .role-card:hover {
+            border-color: #4285F4 !important;
+            box-shadow: 0 6px 20px rgba(66,133,244,0.2) !important;
+            transform: translateY(-2px) !important;
+        }
+        .role-icon {
+            font-size: 3rem !important;
+            margin-bottom: 1rem !important;
+        }
+        .role-title {
+            font-family: 'Google Sans', 'Roboto', sans-serif !important;
+            font-size: 1.3rem !important;
+            font-weight: 500 !important;
+            color: #202124 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .role-desc {
+            font-size: 0.9rem !important;
+            color: #5F6368 !important;
+        }
+
+        /* ===== ACTIVITY CARDS ===== */
+        .activity-card {
+            background: white !important;
+            border-radius: 12px !important;
+            padding: 1.2rem 1.5rem !important;
+            margin-bottom: 0.8rem !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+            border-left: 4px solid #4285F4 !important;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .activity-card.poll { border-left-color: #4285F4 !important; }
+        .activity-card.moodboard { border-left-color: #EA4335 !important; }
+        .activity-card.radar { border-left-color: #FBBC05 !important; }
+        .activity-card.wordcloud { border-left-color: #34A853 !important; }
+
+        /* ===== STATUS BADGES ===== */
+        .badge {
+            display: inline-block !important;
+            padding: 0.2rem 0.8rem !important;
+            border-radius: 20px !important;
+            font-size: 0.75rem !important;
+            font-weight: 500 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+        }
+        .badge-active {
+            background: #E6F4EA !important;
+            color: #137333 !important;
+        }
+        .badge-ended {
+            background: #F1F3F4 !important;
+            color: #5F6368 !important;
+        }
+        .badge-count {
+            background: #E8F0FE !important;
+            color: #1967D2 !important;
+        }
+
+        /* ===== HEATMAP & CONFIRMATION BOX ===== */
+        .heatmap-container {
+            position: relative;
+            display: inline-block;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .confirmation-box {
+            background: linear-gradient(135deg, #E6F4EA 0%, #CEEAD6 100%) !important;
+            border: 2px solid #34A853 !important;
+            border-radius: 12px !important;
+            padding: 1.5rem !important;
+            text-align: center !important;
+            margin: 1rem 0 !important;
+        }
+        .confirmation-box h3 {
+            color: #137333 !important;
+            margin: 0 !important;
+        }
+        .confirmation-box p {
+            color: #137333 !important;
+            opacity: 0.8 !important;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* 7. MASQUAGE DES ÉLÉMENTS STREAMLIT */
@@ -245,7 +409,7 @@ def get_session(code):
 def generate_qr_code(session_code):
     """Generate a QR code image for the session URL."""
     # Build the participant URL
-    base_url = "http://localhost:8501"
+    base_url = "https://reuboost-hup66nciylerd6rbeqqzmx.streamlit.app"
     url = f"{base_url}/?role=participant&code={session_code}"
 
     qr = qrcode.QRCode(
