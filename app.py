@@ -69,9 +69,13 @@ def inject_css():
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Google+Sans:wght@400;500;700&display=swap');
 
-        /* 1. FORCE LE MODE CLAIR AU NIVEAU DU NAVIGATEUR */
+        /* 1. FORCE LE MODE CLAIR AU NIVEAU DU NAVIGATEUR ET DES VARIABLES STREAMLIT */
         :root {
             color-scheme: light !important;
+            --text-color: #202124 !important;
+            --background-color: #F8F9FA !important;
+            --secondary-background-color: #FFFFFF !important;
+            --primary-color: #4285F4 !important;
         }
 
         /* 2. BASE DE L'APPLICATION */
