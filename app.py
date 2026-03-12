@@ -70,11 +70,18 @@ def inject_css():
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Google+Sans:wght@400;500;700&display=swap');
 
         /* ===== GLOBAL ===== */
+        :root {
+            color-scheme: light;
+        }
         html, body, [class*="css"] {
             font-family: 'Roboto', sans-serif !important;
         }
         .stApp {
-            background-color: #F8F9FA;
+            background-color: #F8F9FA !important;
+            color: #202124 !important;
+        }
+        .stMarkdown, p, span, label {
+            color: #202124 !important;
         }
         .block-container {
             max-width: 1100px;
