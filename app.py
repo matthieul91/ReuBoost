@@ -64,301 +64,82 @@ def main():
     )
     
 def inject_css():
-    """Inject Google Material Design CSS."""
+    """Injecte un CSS Material Design renforcé pour forcer le mode clair."""
     st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Google+Sans:wght@400;500;700&display=swap');
 
-        /* ===== GLOBAL ===== */
+        /* 1. FORCE LE MODE CLAIR AU NIVEAU DU NAVIGATEUR */
         :root {
-            color-scheme: light;
+            color-scheme: light !important;
         }
-        html, body, [class*="css"] {
-            font-family: 'Roboto', sans-serif !important;
-        }
+
+        /* 2. BASE DE L'APPLICATION */
         .stApp {
             background-color: #F8F9FA !important;
             color: #202124 !important;
         }
-        .stMarkdown, p, span, label {
+
+        /* 3. FORCE LA COULEUR DES TEXTES STANDARDS */
+        .stMarkdown, p, span, label, li, h1, h2, h3, h4, h5, h6 {
+            color: #202124 !important;
+            font-family: 'Roboto', sans-serif !important;
+        }
+
+        /* 4. CORRECTION DES ZONES D'INPUT (POUR ÉVITER LE NOIR) */
+        input, textarea, .stSelectbox div[data-baseweb="select"] {
+            background-color: #FFFFFF !important;
+            color: #202124 !important;
+            border-radius: 8px !important;
+        }
+
+        /* Cible spécifiquement les fonds des champs de texte Streamlit */
+        div[data-testid="stTextInput"] input, 
+        div[data-testid="stTextArea"] textarea,
+        div[data-testid="stNumberInput"] input {
+            background-color: #FFFFFF !important;
+            color: #202124 !important;
+            border: 1px solid #DADCE0 !important;
+        }
+
+        /* Correction pour les menus déroulants (selectbox) */
+        div[data-baseweb="select"] > div {
+            background-color: #FFFFFF !important;
             color: #202124 !important;
         }
-        .block-container {
-            max-width: 1100px;
-            padding-top: 2rem;
-        }
 
-        /* ===== HEADER ===== */
-        .app-header {
-            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
-            color: white;
-            padding: 2rem 2.5rem;
-            border-radius: 16px;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(66,133,244,0.25);
-        }
-        .app-header h1 {
-            font-family: 'Google Sans', 'Roboto', sans-serif !important;
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: -0.5px;
-        }
-        .app-header p {
-            font-size: 1rem;
-            opacity: 0.9;
-            margin: 0.3rem 0 0 0;
-            font-weight: 300;
-        }
-
-        /* ===== CARDS ===== */
-        .material-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem 2rem;
-            margin-bottom: 1.2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-            border: 1px solid #E8EAED;
-            transition: box-shadow 0.2s ease;
-        }
-        .material-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-        }
-        .material-card h3 {
-            font-family: 'Google Sans', 'Roboto', sans-serif !important;
-            color: #202124;
-            font-size: 1.15rem;
-            font-weight: 500;
-            margin-top: 0;
-        }
-
-        /* ===== SESSION CODE ===== */
-        .session-code-box {
-            background: linear-gradient(135deg, #E8F0FE 0%, #D2E3FC 100%);
-            border: 2px solid #4285F4;
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            margin: 1rem 0;
-        }
-        .session-code {
-            font-family: 'Google Sans', 'Roboto', sans-serif !important;
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #4285F4;
-            letter-spacing: 12px;
-            margin: 0;
-        }
-        .session-code-label {
-            font-size: 0.9rem;
-            color: #5F6368;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 500;
-        }
-
-        /* ===== ROLE SELECTOR ===== */
-        .role-card {
-            background: white;
-            border-radius: 16px;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 2px solid #E8EAED;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .role-card:hover {
-            border-color: #4285F4;
-            box-shadow: 0 6px 20px rgba(66,133,244,0.2);
-            transform: translateY(-2px);
-        }
-        .role-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        .role-title {
-            font-family: 'Google Sans', 'Roboto', sans-serif !important;
-            font-size: 1.3rem;
-            font-weight: 500;
-            color: #202124;
-            margin-bottom: 0.5rem;
-        }
-        .role-desc {
-            font-size: 0.9rem;
-            color: #5F6368;
-        }
-
-        /* ===== ACTIVITY CARDS ===== */
-        .activity-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 0.8rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-            border-left: 4px solid #4285F4;
-        }
-        .activity-card.poll { border-left-color: #4285F4; }
-        .activity-card.moodboard { border-left-color: #EA4335; }
-        .activity-card.radar { border-left-color: #FBBC05; }
-        .activity-card.wordcloud { border-left-color: #34A853; }
-
-        /* ===== STATUS BADGES ===== */
-        .badge {
-            display: inline-block;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .badge-active {
-            background: #E6F4EA;
-            color: #137333;
-        }
-        .badge-ended {
-            background: #F1F3F4;
-            color: #5F6368;
-        }
-        .badge-count {
-            background: #E8F0FE;
-            color: #1967D2;
-        }
-
-        /* ===== BUTTONS ===== */
+        /* 5. BOUTONS MATERIAL DESIGN */
         .stButton > button {
-            font-family: 'Google Sans', 'Roboto', sans-serif !important;
+            font-family: 'Google Sans', sans-serif !important;
             border-radius: 24px !important;
-            padding: 0.5rem 1.8rem !important;
-            font-weight: 500 !important;
-            font-size: 0.9rem !important;
-            letter-spacing: 0.25px !important;
-            border: none !important;
-            transition: all 0.2s ease !important;
-        }
-        .stButton > button[kind="primary"],
-        .stButton > button:first-child {
-            background: #4285F4 !important;
-            color: white !important;
-        }
-        .stButton > button:hover {
-            box-shadow: 0 2px 8px rgba(66,133,244,0.35) !important;
-            transform: translateY(-1px) !important;
-        }
-
-        /* ===== FORM INPUTS ===== */
-        .stTextInput > div > div > input,
-        .stTextArea > div > div > textarea,
-        .stSelectbox > div > div > div {
-            font-family: 'Roboto', sans-serif !important;
-            border-radius: 8px !important;
-            border-color: #DADCE0 !important;
-        }
-        .stTextInput > div > div > input:focus,
-        .stTextArea > div > div > textarea:focus {
-            border-color: #4285F4 !important;
-            box-shadow: 0 0 0 2px rgba(66,133,244,0.2) !important;
-        }
-
-        /* ===== SLIDER ===== */
-        .stSlider > div > div > div > div {
             background-color: #4285F4 !important;
+            color: white !important;
+            border: none !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12) !important;
+        }
+        
+        .stButton > button:hover {
+            background-color: #3367D6 !important;
+            box-shadow: 0 4px 8px rgba(66,133,244,0.3) !important;
         }
 
-        /* ===== TABS ===== */
-        .stTabs [data-baseweb="tab-list"] {
-            gap: 0;
-            background: white;
-            border-radius: 12px;
-            padding: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-        }
-        .stTabs [data-baseweb="tab"] {
-            font-family: 'Google Sans', 'Roboto', sans-serif !important;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.85rem;
-            padding: 0.5rem 1rem;
-        }
-        .stTabs [aria-selected="true"] {
-            background: #E8F0FE !important;
-            color: #1967D2 !important;
+        /* 6. CARTES ET CONTENEURS */
+        .material-card {
+            background: white !important;
+            border-radius: 12px !important;
+            padding: 1.5rem !important;
+            border: 1px solid #E8EAED !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
         }
 
-        /* ===== QR CODE ===== */
-        .qr-container {
-            text-align: center;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        /* 7. MASQUAGE DES ÉLÉMENTS STREAMLIT */
+        #MainMenu, footer, header { visibility: hidden !important; }
+        
+        /* Ajustement de la largeur */
+        .block-container {
+            max-width: 1100px !important;
+            padding-top: 2rem !important;
         }
-
-        /* ===== MOBILE RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .block-container {
-                padding: 1rem 0.5rem !important;
-            }
-            .app-header {
-                padding: 1.2rem 1.5rem;
-                border-radius: 12px;
-            }
-            .app-header h1 {
-                font-size: 1.5rem;
-            }
-            .material-card {
-                padding: 1rem 1.2rem;
-                border-radius: 10px;
-            }
-            .session-code {
-                font-size: 2.5rem;
-                letter-spacing: 8px;
-            }
-            .role-card {
-                padding: 1.5rem 1rem;
-            }
-        }
-
-        /* ===== HEATMAP CONTAINER ===== */
-        .heatmap-container {
-            position: relative;
-            display: inline-block;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        /* ===== PARTICIPANT CONFIRMATION ===== */
-        .confirmation-box {
-            background: linear-gradient(135deg, #E6F4EA 0%, #CEEAD6 100%);
-            border: 2px solid #34A853;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            margin: 1rem 0;
-        }
-        .confirmation-box h3 {
-            color: #137333;
-            margin: 0;
-        }
-        .confirmation-box p {
-            color: #137333;
-            opacity: 0.8;
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .material-card, .activity-card, .role-card {
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        /* ===== HIDE STREAMLIT DEFAULTS ===== */
-        #MainMenu { visibility: hidden; }
-        footer { visibility: hidden; }
-        header { visibility: hidden; }
     </style>
     """, unsafe_allow_html=True)
 
