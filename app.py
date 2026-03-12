@@ -89,6 +89,16 @@ def inject_css():
             color: #202124 !important;
             font-family: 'Roboto', sans-serif !important;
         }
+        
+        /* 3.1. CORRECTION DES TEXTES SUR FONDS BLEUS */
+        .stButton > button p, 
+        .stButton > button span, 
+        .stButton > button div,
+        .app-header h1, 
+        .app-header p, 
+        .app-header span {
+            color: white !important;
+        }
 
         /* 4. CORRECTION DES ZONES D'INPUT (POUR ÉVITER LE NOIR) */
         input, textarea, .stSelectbox div[data-baseweb="select"] {
