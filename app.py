@@ -381,12 +381,13 @@ def load_sessions():
     return {}
 
 
-def create_session(session_name):
-    """Create a new session with a random 4-digit code."""
+def create_session(session_name, admin_password):
+    """Create a new session with a random 4-digit code and an admin password."""
     while True:
         code = str(random.randint(1000, 9999))
         if code not in st.session_state["sessions"]:
             break
+    
     st.session_state["sessions"][code] = {
         "name": session_name,
         "code": code,
@@ -395,6 +396,7 @@ def create_session(session_name):
         "participants": set(),
         "activities": [],
         "admin_name": session_name,
+        "admin_password": admin_password,
     }
     save_sessions()
     return code
@@ -1794,7 +1796,7 @@ def admin_view():
 
 
 def admin_session_manager():
-    """Session creation and selection interface for admin."""
+    """Session creation and selection interface for admin, protected by password per session."""
     col_create, col_resume = st.columns(2)
 
     with col_create:
@@ -1803,32 +1805,48 @@ def admin_session_manager():
             with st.form("create_session_form", border=False):
                 session_name = st.text_input("Nom de la session",
                                               placeholder="Ex: Réunion d'équipe - Mars 2026")
+                admin_password = st.text_input("Mot de passe administrateur", type="password", 
+                                               placeholder="Définissez un mot de passe",
+                                               help="Ce mot de passe vous permettra de rouvrir cette session plus tard.")
+                
                 create_btn = st.form_submit_button("🚀 Lancer la session", use_container_width=True)
-                if create_btn and session_name:
-                    code = create_session(session_name)
-                    st.session_state["current_session_code"] = code
-                    st.rerun()
-                elif create_btn:
-                    st.warning("Veuillez donner un nom à la session.")
+                if create_btn:
+                    if not session_name:
+                        st.warning("Veuillez donner un nom à la session.")
+                    elif not admin_password:
+                        st.warning("Veuillez définir un mot de passe administrateur pour cette session.")
+                    else:
+                        code = create_session(session_name, admin_password)
+                        st.session_state["current_session_code"] = code
+                        st.rerun()
 
     with col_resume:
         with st.container(border=True):
-            st.markdown("#### 📂 Sessions Existantes")
-            sessions = st.session_state.get("sessions", {})
-            active_sessions = {code: s for code, s in sessions.items() if s.get("status") == "active"}
-
-            if active_sessions:
-                for code, s in active_sessions.items():
-                    col_name, col_btn = st.columns([7, 3])
-                    with col_name:
-                        st.markdown(f"**{s['name']}** — Code: `{code}`<br>👥 {len(s['participants'])} participants", unsafe_allow_html=True)
-                    with col_btn:
-                        st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
-                        if st.button("Ouverte", key=f"open_{code}", use_container_width=True):
-                            st.session_state["current_session_code"] = code
-                            st.rerun()
-            else:
-                st.info("Aucune session active.")
+            st.markdown("#### 📂 Ouvrir une Session Existante")
+            st.markdown("Veuillez entrer le code de votre session et votre mot de passe administrateur.")
+            with st.form("resume_session_form", border=False):
+                resume_code = st.text_input("Code de session (4 chiffres)", max_chars=4, placeholder="1234")
+                resume_pwd = st.text_input("Mot de passe administrateur", type="password", placeholder="Votre mot de passe")
+                resume_btn = st.form_submit_button("📂 Ouvrir", use_container_width=True)
+                
+                if resume_btn:
+                    if not resume_code or not resume_pwd:
+                        st.warning("Veuillez remplir les deux champs.")
+                    else:
+                        sessions = st.session_state.get("sessions", {})
+                        if resume_code in sessions:
+                            s = sessions[resume_code]
+                            if s.get("status") == "active":
+                                # Check password (or allow legacy sessions without password)
+                                if s.get("admin_password") == resume_pwd or not s.get("admin_password"):
+                                    st.session_state["current_session_code"] = resume_code
+                                    st.rerun()
+                                else:
+                                    st.error("Mot de passe incorrect.")
+                            else:
+                                st.error("Cette session est terminée.")
+                        else:
+                            st.error("Session introuvable.")
 
 
 # =============================================================================
