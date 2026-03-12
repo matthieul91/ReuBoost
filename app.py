@@ -272,14 +272,18 @@ def admin_create_poll(session_code):
     """Admin form to create a new poll."""
     if f"poll_count_{session_code}" not in st.session_state:
         st.session_state[f"poll_count_{session_code}"] = 2
+    if f"poll_clear_counter_{session_code}" not in st.session_state:
+        st.session_state[f"poll_clear_counter_{session_code}"] = 0
+        
+    clear_counter = st.session_state[f"poll_clear_counter_{session_code}"]
         
     st.markdown("#### 📊 Créer un Sondage Express")
-    question = st.text_input("Question", placeholder="Ex: Quel est votre outil préféré ?", key=f"poll_q_{session_code}")
+    question = st.text_input("Question", placeholder="Ex: Quel est votre outil préféré ?", key=f"poll_q_{session_code}_{clear_counter}")
     cols = st.columns(2)
     options = []
     for i in range(st.session_state[f"poll_count_{session_code}"]):
         with cols[i % 2]:
-            opt = st.text_input(f"Option {i+1}", key=f"poll_opt_{i}_{session_code}", placeholder=f"Option {i+1}")
+            opt = st.text_input(f"Option {i+1}", key=f"poll_opt_{i}_{session_code}_{clear_counter}", placeholder=f"Option {i+1}")
             if opt:
                 options.append(opt)
                 
@@ -306,17 +310,15 @@ def admin_create_poll(session_code):
                 session["activities"].append(activity)
                 save_sessions()
                 
-                # Clear inputs to reset form behavior manually
-                st.session_state[f"poll_q_{session_code}"] = ""
-                for i in range(st.session_state[f"poll_count_{session_code}"]):
-                    if f"poll_opt_{i}_{session_code}" in st.session_state:
-                         st.session_state[f"poll_opt_{i}_{session_code}"] = ""
+                # Clear inputs by incrementing the clear counter
+                st.session_state[f"poll_clear_counter_{session_code}"] += 1
                 st.session_state[f"poll_count_{session_code}"] = 2
                 
                 st.toast("✅ Sondage créé avec succès !")
                 st.rerun()
             else:
                 st.warning("Veuillez saisir une question et au moins 2 options.")
+
 
 
 def admin_view_poll_results(activity):
