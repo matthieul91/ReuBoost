@@ -6,6 +6,7 @@ Une application Streamlit complète pour animer des réunions avec :
 - Météo du Jour (Moodboard avec Heatmap)
 - Diagramme en Araignée (Radar Chart)
 - Nuage de Mots (Word Cloud)
+- ...
 """
 
 import streamlit as st
